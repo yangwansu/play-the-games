@@ -19,24 +19,50 @@
   
 - Web Page 가 새로고침 될 때 플레이는 어떻게 처리되나? 
 
+- 어떤 게임들이 있나?
+  - highlow
+  - baseball
+  
+## Events
+
+1. 하이로우 게임이 시작되었다.
+2. 하이로우 게임이 종료되었다.
+3. 하이로우 턴을 실행했다.
+
+## 어떤 상태가 변하는가?
+
+1. 하이로우 게임이 시작되었다.
+    - Target Value 가 설정 된다. 
+        - Game 이 만들어질때 값은 무엇인가?
+    - Score 가 설정된다. 
+    - 게임의 상태가 시작으로(Started) 변경된다. 
+2. 하이로우 게임이 종료되었다. 
+    - 게임의 상태가 종료로(Ended) 변경된다.
+3. 하이로우 텀을 실행 했다.
+  - Score 가 변경된다.
+  - 게임의 상태가 종료로(Ended) 변경 될 수도 있다.
+
+## 누가 관심을 가지나?  
+
+1. 하이로우 게임이 시작되었다.
+   - 아무도 관심 없다. 
+2. 하이로우 게임이 종료되었다.
+    - 랭킹설정에서 관심을 가진다.
+3. 하이로우 턴을 실행했다.
+    - 아무도 관심 없다.
+
+
+
 ```mermaid
 classDiagram
-Play <|-- TrunPlay
-Game <-- Play : Game 을 Play 한다.
-TrunPlay <-- TopRanks
 
-class Play{
-  + play()
-  + exit()
-}
-
-
-class TrunPlay {
+class HighLowGame {
  -PlayId id
  -Score score
- -List~Turn~ turns
  -PlayState state
- + TrunPlay doTurn(turn)
+ + HighLowGame play()
+ + HighLowGame doTurn(turn)
+ + HighLowGame exit()
 }
 
 class PlayId {
