@@ -56,7 +56,7 @@
 ```mermaid
 classDiagram
 
-class HighLowGame {
+class HighLowPlay {
  -PlayId id
  -Score score
  -PlayState state
@@ -95,3 +95,10 @@ class Turn {
 
 
 ## TODO
+- 난이도 조절 
+- 게임오버 조건 설정 
+  - 제한 시간
+  - 제한 턴 
+
+- 야구게임 추가 
+- 오목게임 추가 
