@@ -27,7 +27,6 @@ class HighLowPlayTest {
     @Test
     void guessByTurn() {
         HighLowPlay guess1 = sut.by(HighLowTurn.of(1));
-
         assertThat(guess1).isNotSameAs(sut);
         assertThat(guess1.getState()).isEqualTo(ON_GAME);
         assertThat(guess1.getLastResultOfTurn()).isEqualTo(HighLowResultOfTurn.isLow());
