@@ -59,17 +59,21 @@
 ```mermaid
 classDiagram
 
-Ranking --> GameId
+Ranking --> RankingId
 Ranking "1" --> "1..*" PlayScore
 
-GameId <-- HighLowPlay
+class RankingId {
+    - GameRef gameRef
+}
+
+GameRef <-- HighLowPlay
 
 class RankingRepository { 
 
 }
 
 class Ranking {
- -GameId id
+ -RankingId id
  -int sizeOfTop
  -Map~int,PlayScore~ ranks
  
