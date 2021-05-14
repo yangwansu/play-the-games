@@ -1,11 +1,14 @@
-package org.slipp.masil.games.domains;
+package org.slipp.masil.games.domains.highrow;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.slipp.masil.games.domains.PlayState.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.slipp.masil.games.domains.PlayState.ENDED;
-import static org.slipp.masil.games.domains.PlayState.ON_GAME;
+import org.slipp.masil.games.domains.HighLowResultOfTurn;
+import org.slipp.masil.games.domains.HighLowTurn;
+import org.slipp.masil.games.domains.PlayState;
+import org.slipp.masil.games.domains.Score;
 
 class HighLowPlayTest {
 
@@ -16,8 +19,7 @@ class HighLowPlayTest {
 
     @BeforeEach
     void setUp() {
-
-        sut = HighLowPlay.by(userName, target);
+        sut = HighLowPlay.by(target);
         assertThat(sut.getTarget()).isEqualTo(target);
         assertThat(sut.getState()).isEqualTo(ON_GAME);
         assertThat(sut.getScore()).isEqualTo(Score.of(0));
@@ -40,4 +42,24 @@ class HighLowPlayTest {
         assertThat(guess10.getLastResultOfTurn()).isEqualTo(HighLowResultOfTurn.isMatched());
 
     }
+
+    @Test
+    void Play_가_종료되면_상태가_변경된다() {
+        assertThat(sut.getState()).isEqualTo(ON_GAME);
+
+        sut.exit();
+
+        assertThat(sut.getState()).isEqualTo(ENDED);
+    }
+
+    @Test
+    void 종료된_Play에서_다시_종료시킬경우_IllegalStateException_호출한다() {
+        assertThat(sut.getState()).isEqualTo(ON_GAME);
+        sut.exit();
+        assertThat(sut.getState()).isEqualTo(ENDED);
+
+        assertThatThrownBy(() -> sut.exit())
+            .isInstanceOf(IllegalStateException.class).hasMessageContaining("play has already ended");
+    }
+
 }
