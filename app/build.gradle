@@ -24,20 +24,13 @@ repositories {
 dependencies {
     swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.25'  // or Swagger Codegen V3
 
-    // Use JUnit Jupiter API for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    testImplementation "org.mockito:mockito-core:3.+"
-    testImplementation 'org.mockito:mockito-junit-jupiter:2.23.0'
-    testImplementation 'org.assertj:assertj-core:3.19.0'
-
-    // Use JUnit Jupiter Engine for testing.
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:29.0-jre'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     runtimeOnly 'org.hsqldb:hsqldb'
+
+    implementation 'org.springframework.boot:spring-boot-starter-test'
 
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
