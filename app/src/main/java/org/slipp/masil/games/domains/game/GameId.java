@@ -1,8 +1,8 @@
-package org.slipp.masil.games.domains.ranking;
+package org.slipp.masil.games.domains.game;
 
 import lombok.Value;
 
 @Value(staticConstructor = "of")
-public class GameRef {
+public class GameId {
     Long id;
 }

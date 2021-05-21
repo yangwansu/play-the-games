@@ -3,40 +3,60 @@ package org.slipp.masil.games.domains.ranking;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.checkerframework.checker.units.qual.C;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.annotation.Version;
+import org.springframework.data.relational.core.mapping.Column;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.slipp.masil.games.domains.ranking.RankingItem.NONE_RANK_ITEM;
 
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PACKAGE, onConstructor_=@PersistenceConstructor)
 public class Ranking {
 
+    public static final Long INIT_VERSION = null;
+
     public static Ranking of(RankingId id, int sizeOfTop) {
-        return new Ranking(id, sizeOfTop, new ArrayList<>());
+        return new Ranking(id, sizeOfTop, initItems(sizeOfTop), INIT_VERSION);
     }
 
+    private static ArrayList<RankingItem> initItems(int sizeOfTop) {
+        ArrayList<RankingItem> items = new ArrayList<>();
+        for (int i = 0; i < sizeOfTop; i++) {
+            items.add(NONE_RANK_ITEM);
+        }
+        return items;
+    }
+
+    @Id
     private RankingId id;
 
     private int sizeOfTop;
 
-    private List<PlayInfo> infos;
+    @Column("RANKING_ID")
+    private List<RankingItem> items;
 
+    @Version
+    private Long version;
 
-    public Ranking refresh(PlayInfo newInfo) {
-        List<PlayInfo> newRanks = new ArrayList<>(infos);
+    public void refresh(RankingItem newInfo) {
+        List<RankingItem> newRanks = new ArrayList<>(items);
         newRanks.add(newInfo);
-        return new Ranking(getId(), sizeOfTop, newRanks);
+        List<RankingItem> sorted = newRanks.stream().sorted().collect(Collectors.toList());
+
+        items = sorted.subList(0, sizeOfTop);
     }
 
-    public PlayInfo top(int topN) {
-        List<PlayInfo> ranks = getInfos();
-        ArrayList<PlayInfo> sorting = new ArrayList<>(ranks);
-        sorting.sort((p0, p1) -> p1.getScore().getValue() - p0.getScore().getValue());
-        if(getInfos().size() >= topN) {
-            return sorting.get(topN-1);
-        }else {
-            return PlayInfo.NONE_PLAY_INFO;
-        }
+    public RankingItem top(int topN) {
+        return items.get(arrayIndex(topN));
+    }
+
+    private int arrayIndex(int topN) {
+        return topN - 1;
     }
 }
