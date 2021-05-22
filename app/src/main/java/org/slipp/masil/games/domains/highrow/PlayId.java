@@ -1,8 +1,8 @@
 package org.slipp.masil.games.domains.highrow;
 
-import static java.util.Objects.*;
-
 import lombok.Getter;
+
+import static java.util.Objects.requireNonNull;
 
 @Getter
 public class PlayId {

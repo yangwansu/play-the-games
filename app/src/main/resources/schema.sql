@@ -1,0 +1,2 @@
+CREATE TABLE IF NOT EXISTS RANKING(id bigint primary key, size_of_top integer, version bigint)
+CREATE TABLE IF NOT EXISTS RANKING_ITEM(ranking_id bigint, ranking_key integer, user_name varchar(100), score integer, ranked_at timestamp)

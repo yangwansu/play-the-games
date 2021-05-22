@@ -1,16 +1,16 @@
 package org.slipp.masil.games.domains.highrow;
 
-import static org.slipp.masil.games.domains.HighLowResultOfTurn.*;
-import static org.slipp.masil.games.domains.PlayState.*;
-
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.slipp.masil.games.domains.HighLowResultOfTurn;
 import org.slipp.masil.games.domains.HighLowTurn;
 import org.slipp.masil.games.domains.PlayState;
 import org.slipp.masil.games.domains.Score;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import static org.slipp.masil.games.domains.HighLowResultOfTurn.*;
+import static org.slipp.masil.games.domains.PlayState.ENDED;
+import static org.slipp.masil.games.domains.PlayState.ON_GAME;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
