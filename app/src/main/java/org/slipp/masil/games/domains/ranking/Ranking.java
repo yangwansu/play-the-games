@@ -34,15 +34,15 @@ public class Ranking {
     }
 
     @Id
-    private RankingId id;
+    private final RankingId id;
 
-    private int sizeOfTop;
+    private final int sizeOfTop;
 
     @Column("RANKING_ID")
     private List<RankingItem> items;
 
     @Version
-    private Long version;
+    private final Long version;
 
     public void refresh(RankingItem newInfo) {
         List<RankingItem> newRanks = new ArrayList<>(items);
