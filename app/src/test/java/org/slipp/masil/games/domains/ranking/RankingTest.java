@@ -13,7 +13,6 @@ import static org.slipp.masil.games.domains.ranking.RankingItem.NONE_RANK_ITEM;
 class RankingTest {
 
     GameId gameId = GameId.of(1L);
-    RankingId id = RankingId.of(gameId);
 
     //TODO 잘못된 값 을 넣었을때
     //TODO 순위를 정하는 전략은 어디에 있나?
@@ -25,13 +24,13 @@ class RankingTest {
     void create() {
 
         int size = 1;
-        final Ranking ranking = Ranking.of(id, size);
+        final Ranking ranking = Ranking.of(gameId, size);
 
         assertThat(ranking.top(1)).isSameAs(NONE_RANK_ITEM);
         assertThatThrownBy(()->ranking.top(2)).isInstanceOf(IndexOutOfBoundsException.class);
 
         size = 2;
-        final Ranking ranking2 = Ranking.of(id, size);
+        final Ranking ranking2 = Ranking.of(gameId, size);
         assertThat(ranking2.top(1)).isSameAs(NONE_RANK_ITEM);
         assertThat(ranking2.top(2)).isSameAs(NONE_RANK_ITEM);
         assertThatThrownBy(()->ranking2.top(3)).isInstanceOf(IndexOutOfBoundsException.class);
@@ -40,7 +39,7 @@ class RankingTest {
     @Test
     void refresh() {
         int size = 4;
-        Ranking ranking = Ranking.of(id, size);
+        Ranking ranking = Ranking.of(gameId, size);
 
         RankingItem item1 = RankingItem.of("wansu", Score.of(0), LocalDateTime.now());
         RankingItem item2 = RankingItem.of("wansu", Score.of(10), LocalDateTime.now());

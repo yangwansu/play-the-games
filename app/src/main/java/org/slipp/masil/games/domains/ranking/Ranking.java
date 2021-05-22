@@ -3,6 +3,7 @@ package org.slipp.masil.games.domains.ranking;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.slipp.masil.games.domains.game.GameId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.annotation.Version;
@@ -21,8 +22,13 @@ public class Ranking {
 
     public static final Long INIT_VERSION = null;
 
+    @Deprecated
     public static Ranking of(RankingId id, int size) {
         return new Ranking(id, size, initItems(size), INIT_VERSION);
+    }
+
+    public static Ranking of(GameId id, int size) {
+        return Ranking.of(RankingId.of(id), size);
     }
 
     private static ArrayList<RankingItem> initItems(int size) {
