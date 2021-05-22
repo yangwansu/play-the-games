@@ -21,13 +21,13 @@ public class Ranking {
 
     public static final Long INIT_VERSION = null;
 
-    public static Ranking of(RankingId id, int sizeOfTop) {
-        return new Ranking(id, sizeOfTop, initItems(sizeOfTop), INIT_VERSION);
+    public static Ranking of(RankingId id, int size) {
+        return new Ranking(id, size, initItems(size), INIT_VERSION);
     }
 
-    private static ArrayList<RankingItem> initItems(int sizeOfTop) {
+    private static ArrayList<RankingItem> initItems(int size) {
         ArrayList<RankingItem> items = new ArrayList<>();
-        for (int i = 0; i < sizeOfTop; i++) {
+        for (int i = 0; i < size; i++) {
             items.add(NONE_RANK_ITEM);
         }
         return items;
@@ -36,7 +36,7 @@ public class Ranking {
     @Id
     private final RankingId id;
 
-    private final int sizeOfTop;
+    private final int size;
 
     @Column("RANKING_ID")
     private List<RankingItem> items;
@@ -49,7 +49,7 @@ public class Ranking {
         newRanks.add(newInfo);
         List<RankingItem> sorted = newRanks.stream().sorted().collect(Collectors.toList());
 
-        items = sorted.subList(0, sizeOfTop);
+        items = sorted.subList(0, size);
     }
 
     public RankingItem top(int topN) {

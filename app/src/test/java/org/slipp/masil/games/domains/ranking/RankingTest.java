@@ -17,21 +17,21 @@ class RankingTest {
 
     //TODO 잘못된 값 을 넣었을때
     //TODO 순위를 정하는 전략은 어디에 있나?
-    //TODO sizeOfTop 이 0이라면?
-    //TODO top 에 값이 sizeOfTop 을 벗어나면 ?
+    //TODO size 이 0이라면?
+    //TODO top 에 값이 size 을 벗어나면 ?
 
 
     @Test
     void create() {
 
-        int sizeOfTop = 1;
-        final Ranking ranking = Ranking.of(id, sizeOfTop);
+        int size = 1;
+        final Ranking ranking = Ranking.of(id, size);
 
         assertThat(ranking.top(1)).isSameAs(NONE_RANK_ITEM);
         assertThatThrownBy(()->ranking.top(2)).isInstanceOf(IndexOutOfBoundsException.class);
 
-        sizeOfTop = 2;
-        final Ranking ranking2 = Ranking.of(id, sizeOfTop);
+        size = 2;
+        final Ranking ranking2 = Ranking.of(id, size);
         assertThat(ranking2.top(1)).isSameAs(NONE_RANK_ITEM);
         assertThat(ranking2.top(2)).isSameAs(NONE_RANK_ITEM);
         assertThatThrownBy(()->ranking2.top(3)).isInstanceOf(IndexOutOfBoundsException.class);
@@ -39,8 +39,8 @@ class RankingTest {
 
     @Test
     void refresh() {
-        int sizeOfTop = 4;
-        Ranking ranking = Ranking.of(id, sizeOfTop);
+        int size = 4;
+        Ranking ranking = Ranking.of(id, size);
 
         RankingItem item1 = RankingItem.of("wansu", Score.of(0), LocalDateTime.now());
         RankingItem item2 = RankingItem.of("wansu", Score.of(10), LocalDateTime.now());

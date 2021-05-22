@@ -78,7 +78,7 @@ class Ranking {
 
  -RankingId id
 
- -int sizeOfTop
+ -int size
  -Map~int,PlayScore~ ranks
  
  + Ranking refresh(playscore)
