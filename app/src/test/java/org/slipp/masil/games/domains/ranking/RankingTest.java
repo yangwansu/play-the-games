@@ -14,11 +14,16 @@ class RankingTest {
 
     GameId gameId = GameId.of(1L);
 
-    //TODO 잘못된 값 을 넣었을때
-    //TODO 순위를 정하는 전략은 어디에 있나?
-    //TODO size 이 0이라면?
-    //TODO top 에 값이 size 을 벗어나면 ?
 
+    @Test
+    void exceptions_of_creation() {
+        assertThatThrownBy(() -> Ranking.of((GameId) null, 1))
+                .isInstanceOf(IllegalArgumentException.class);
+
+        assertThatThrownBy(() -> Ranking.of(gameId, 0))
+                .describedAs("the size of ranking must be greater than zero.")
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 
     @Test
     void create() {

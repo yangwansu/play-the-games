@@ -1,7 +1,5 @@
 package org.slipp.masil.games.domains.ranking;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.slipp.masil.games.domains.game.GameId;
 import org.springframework.data.annotation.Id;
@@ -10,6 +8,7 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Column;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +16,6 @@ import static org.slipp.masil.games.domains.ranking.RankingItem.NONE_RANK_ITEM;
 
 
 @Getter
-@AllArgsConstructor(access = AccessLevel.PACKAGE, onConstructor_=@PersistenceConstructor)
 public class Ranking {
 
     public static final Long INIT_VERSION = null;
@@ -40,29 +38,71 @@ public class Ranking {
     }
 
     @Id
-    private final RankingId id;
+    private RankingId id;
 
-    private final int size;
+    private int size;
 
     @Column("RANKING_ID")
     private List<RankingItem> items;
 
     @Version
-    private final Long version;
+    private Long version;
+
+    @PersistenceConstructor
+    private Ranking(RankingId id, int size, List<RankingItem> items, Long version) {
+        setId(id);
+        setSize(size);
+        setItems(items);
+        setVersion(version);
+    }
+
+    //guard
+    private void setSize(int size) {
+        if(size <= 0) {
+            throw new IllegalArgumentException("the size of ranking must be greater than zero.");
+        }
+        this.size = size;
+    }
+
+    //guard
+    private void setId(RankingId id) {
+        if(id == null || id.getGameId() == null || id.getGameId().getId() == null) {
+            throw new IllegalArgumentException("id is invalid : "+id);
+        }
+        this.id = id;
+    }
+
+    private void setItems(List<RankingItem> items) {
+        if(items.size() != getSize()) {
+            throw new IllegalArgumentException();
+        }
+        this.items = items;
+    }
+
+    private void setVersion(Long version) {
+        if(version !=null && version < 0) {
+            throw new IllegalArgumentException();
+        }
+        this.version = version;
+    }
 
     public void refresh(RankingItem newInfo) {
-        List<RankingItem> newRanks = new ArrayList<>(items);
+        List<RankingItem> newRanks = new ArrayList<>(getItems());
         newRanks.add(newInfo);
         List<RankingItem> sorted = newRanks.stream().sorted().collect(Collectors.toList());
 
-        items = sorted.subList(0, size);
+        setItems(sorted.subList(0, size));
     }
 
     public RankingItem top(int topN) {
-        return items.get(arrayIndex(topN));
+        return getItems().get(arrayIndex(topN));
     }
 
     private int arrayIndex(int topN) {
         return topN - 1;
+    }
+
+    public List<RankingItem> getItems() {
+        return Collections.unmodifiableList(items);
     }
 }
