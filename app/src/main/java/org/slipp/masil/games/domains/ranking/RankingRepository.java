@@ -1,6 +1,9 @@
 package org.slipp.masil.games.domains.ranking;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.Optional;
 
-public interface RankingRepository extends CrudRepository<Ranking, RankingId> {
+public interface RankingRepository {
+    Ranking findById(RankingId id);
+
+    Ranking save(Ranking ranking);
 }

@@ -33,7 +33,7 @@ public class RankingRepositoryTest {
 
     @Test
     void saveAndFind() {
-        Ranking find = repository.findById(saved.getId()).orElse(null);
+        Ranking find = repository.findById(saved.getId());
 
         assert find != null;
 
@@ -49,7 +49,6 @@ public class RankingRepositoryTest {
 
     }
 
-
     @Test
     void refreshAndUpdate() {
 
@@ -57,7 +56,7 @@ public class RankingRepositoryTest {
         saved.refresh(item);
         repository.save(saved);
 
-        Ranking find = repository.findById(saved.getId()).orElse(null);
+        Ranking find = repository.findById(saved.getId());
 
         assert find != null;
 
