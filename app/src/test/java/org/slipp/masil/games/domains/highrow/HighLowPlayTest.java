@@ -1,8 +1,5 @@
 package org.slipp.masil.games.domains.highrow;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.slipp.masil.games.domains.PlayState.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slipp.masil.games.domains.HighLowResultOfTurn;
@@ -10,7 +7,15 @@ import org.slipp.masil.games.domains.HighLowTurn;
 import org.slipp.masil.games.domains.Score;
 import org.slipp.masil.games.domains.game.GameId;
 
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.slipp.masil.games.domains.PlayState.ENDED;
+import static org.slipp.masil.games.domains.PlayState.ON_GAME;
+
 class HighLowPlayTest {
+
 
     String userName = "Mike";
     int target = 10;
@@ -18,8 +23,13 @@ class HighLowPlayTest {
 
     @BeforeEach
     void setUp() {
-        PlayId mike = PlayId.of(GameId.of(1L), userName);
-        sut = HighLowPlay.by(mike, target);
+        GameId gameId = GameId.of(1L);
+        LocalDateTime startAt = LocalDateTime.now();
+        sut = HighLowPlay.by(gameId, userName, startAt, target);
+
+        assertThat(sut.getGameId()).isEqualTo(gameId);
+        assertThat(sut.getUserName()).isEqualTo(userName);
+        assertThat(sut.getStartAt()).isEqualTo(startAt);
         assertThat(sut.getTarget()).isEqualTo(target);
         assertThat(sut.getState()).isEqualTo(ON_GAME);
         assertThat(sut.getScore()).isEqualTo(Score.of(0));

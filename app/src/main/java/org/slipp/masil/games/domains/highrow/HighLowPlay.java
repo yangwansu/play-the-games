@@ -1,28 +1,33 @@
 package org.slipp.masil.games.domains.highrow;
 
-import static org.slipp.masil.games.domains.HighLowResultOfTurn.*;
-import static org.slipp.masil.games.domains.PlayState.*;
-
-import java.util.Objects;
-
+import lombok.Getter;
 import org.slipp.masil.games.domains.HighLowResultOfTurn;
 import org.slipp.masil.games.domains.HighLowTurn;
 import org.slipp.masil.games.domains.PlayState;
 import org.slipp.masil.games.domains.Score;
+import org.slipp.masil.games.domains.game.GameId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.annotation.Version;
-import org.springframework.data.relational.core.mapping.Embedded;
 
-import lombok.Getter;
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+import static org.slipp.masil.games.domains.HighLowResultOfTurn.*;
+import static org.slipp.masil.games.domains.PlayState.ENDED;
+import static org.slipp.masil.games.domains.PlayState.ON_GAME;
 
 public class HighLowPlay {
 
     public static final Long INIT_VERSION = null;
     @Id
+    @Getter
     private Long id;
-    @Embedded.Empty
-    private PlayId playId;
+    @Getter
+    private GameId gameId;
+    @Getter
+    private String userName;
+    @Getter
+    private LocalDateTime startAt;
     @Getter
     private int target;
     @Getter
@@ -35,15 +40,21 @@ public class HighLowPlay {
     @Version
     private Long version;
 
-    public static HighLowPlay by(PlayId playId, int target) {
-        return new HighLowPlay(null, playId, target, ON_GAME, Score.of(0), HighLowResultOfTurn.NONE, INIT_VERSION);
+    public static HighLowPlay by(GameId gameId, String userName, LocalDateTime startAt, int target) {
+        return new HighLowPlay(null, gameId, userName, startAt, target, ON_GAME, Score.of(0), HighLowResultOfTurn.NONE, INIT_VERSION);
     }
 
-    @PersistenceConstructor
-    public HighLowPlay(Long id, PlayId playId, int target, PlayState state, Score score,
-        HighLowResultOfTurn highLowResultOfTurn, Long version) {
+
+    private HighLowPlay(Long id,
+                        GameId gameId, String userName, LocalDateTime startAt, int target, PlayState state, Score score,
+                        HighLowResultOfTurn highLowResultOfTurn, Long version) {
         this.id = id;
-        setPlayId(playId);
+        if (Objects.isNull(gameId) && Objects.isNull(userName)){
+            throw new IllegalStateException(" is invalid");
+        }
+        setGameId(gameId);
+        setUserName(userName);
+        setStartAt(startAt);
         setTarget(target);
         setState(state);
         setScore(score);
@@ -51,11 +62,17 @@ public class HighLowPlay {
         this.version = version;
     }
 
-    private void setPlayId(PlayId playId) {
-        if (Objects.isNull(playId) || Objects.isNull(playId.getGameId()) || Objects.isNull(playId.getUserName())){
-            throw new IllegalStateException("playId is invalid");
-        }
-        this.playId = playId;
+    private void setStartAt(LocalDateTime startAt) {
+        this.startAt = startAt;
+    }
+
+
+    private void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    private void setGameId(GameId gameId) {
+        this.gameId = gameId;
     }
 
     private void setTarget(int target) {
@@ -87,8 +104,9 @@ public class HighLowPlay {
     }
 
     private HighLowPlay setState(PlayState state, HighLowResultOfTurn resultOfTurn) {
-        return new HighLowPlay(null, getId(), getTarget(), state, getScore(), resultOfTurn, version);
+        return new HighLowPlay(getId(), getGameId(), getUserName(), getStartAt(), getTarget(), state, getScore(), resultOfTurn, getVersion());
     }
+
 
     public HighLowPlay by(HighLowTurn turn) {
         if (target > turn.getGuess()) {
@@ -97,10 +115,6 @@ public class HighLowPlay {
             return setState(ON_GAME, HIGH);
         }
         return setState(ENDED, MATCHED);
-    }
-
-    public PlayId getId() {
-        return playId;
     }
 
     //TODO Play, doTurn 은 어떻게 구현할 것인가?
