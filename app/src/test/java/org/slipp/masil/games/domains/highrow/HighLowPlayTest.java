@@ -7,11 +7,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slipp.masil.games.domains.HighLowResultOfTurn;
 import org.slipp.masil.games.domains.HighLowTurn;
-import org.slipp.masil.games.domains.PlayState;
 import org.slipp.masil.games.domains.Score;
+import org.slipp.masil.games.domains.game.GameId;
 
 class HighLowPlayTest {
-
 
     String userName = "Mike";
     int target = 10;
@@ -19,11 +18,12 @@ class HighLowPlayTest {
 
     @BeforeEach
     void setUp() {
-        sut = HighLowPlay.by(target);
+        PlayId mike = PlayId.of(GameId.of(1L), userName);
+        sut = HighLowPlay.by(mike, target);
         assertThat(sut.getTarget()).isEqualTo(target);
         assertThat(sut.getState()).isEqualTo(ON_GAME);
         assertThat(sut.getScore()).isEqualTo(Score.of(0));
-        assertThat(sut.getLastResultOfTurn()).isEqualTo(HighLowResultOfTurn.NONE);
+        assertThat(sut.getHighLowResultOfTurn()).isEqualTo(HighLowResultOfTurn.NONE);
     }
 
     @Test
@@ -31,15 +31,15 @@ class HighLowPlayTest {
         HighLowPlay guess1 = sut.by(HighLowTurn.of(1));
         assertThat(guess1).isNotSameAs(sut);
         assertThat(guess1.getState()).isEqualTo(ON_GAME);
-        assertThat(guess1.getLastResultOfTurn()).isEqualTo(HighLowResultOfTurn.isLow());
+        assertThat(guess1.getHighLowResultOfTurn()).isEqualTo(HighLowResultOfTurn.isLow());
 
         HighLowPlay guess11 = guess1.by(HighLowTurn.of(11));
         assertThat(guess11.getState()).isEqualTo(ON_GAME);
-        assertThat(guess11.getLastResultOfTurn()).isEqualTo(HighLowResultOfTurn.isHigh());
+        assertThat(guess11.getHighLowResultOfTurn()).isEqualTo(HighLowResultOfTurn.isHigh());
 
         HighLowPlay guess10 = guess11.by(HighLowTurn.of(10));
         assertThat(guess10.getState()).isEqualTo(ENDED);
-        assertThat(guess10.getLastResultOfTurn()).isEqualTo(HighLowResultOfTurn.isMatched());
+        assertThat(guess10.getHighLowResultOfTurn()).isEqualTo(HighLowResultOfTurn.isMatched());
 
     }
 

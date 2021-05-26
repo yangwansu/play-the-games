@@ -1,4 +1,8 @@
 package org.slipp.masil.games.domains.highrow;
 
-public interface HighLowPlayRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface HighLowPlayRepository extends CrudRepository<HighLowPlay, PlayId> {
+	HighLowPlay findByPlayId(PlayId id);
+
 }

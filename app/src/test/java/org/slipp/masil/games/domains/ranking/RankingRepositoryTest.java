@@ -18,7 +18,6 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFOR
 @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
 public class RankingRepositoryTest {
 
-
     @Autowired
     RankingRepository repository;
 

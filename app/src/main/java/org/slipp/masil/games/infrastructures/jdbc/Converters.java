@@ -1,13 +1,13 @@
 package org.slipp.masil.games.infrastructures.jdbc;
 
 import org.slipp.masil.games.domains.Score;
+import org.slipp.masil.games.domains.game.GameId;
 import org.slipp.masil.games.domains.ranking.RankingId;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
 
 public class Converters {
-
 
     @WritingConverter
     public enum RankingIdToLong implements Converter<RankingId, Long> {
@@ -47,4 +47,25 @@ public class Converters {
             return Score.of(source);
         }
     }
+
+    @WritingConverter
+    public enum GameIdToLong implements Converter<GameId, Long> {
+        INSTANCE;
+
+        @Override
+        public Long convert(GameId source) {
+            return source.getId();
+        }
+    }
+
+    @ReadingConverter
+    public enum LongToGameId implements Converter<Long, GameId> {
+        INSTANCE;
+
+        @Override
+        public GameId convert(Long source) {
+            return GameId.of(source);
+        }
+    }
+
 }

@@ -15,7 +15,8 @@ public class DataJdbcConfig  extends AbstractJdbcConfiguration{
     public JdbcCustomConversions jdbcCustomConversions() {
         return new JdbcCustomConversions(Arrays.asList(
                 Converters.RankingIdToLong.INSTANCE, Converters.LongToRankingId.INSTANCE,
-                Converters.ScoreToInteger.INSTANCE, Converters.IntegerToScore.INSTANCE
+                Converters.ScoreToInteger.INSTANCE, Converters.IntegerToScore.INSTANCE,
+                Converters.GameIdToLong.INSTANCE, Converters.LongToGameId.INSTANCE
         ));
     }
 }

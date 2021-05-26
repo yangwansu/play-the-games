@@ -14,7 +14,6 @@ class RankingTest {
 
     GameId gameId = GameId.of(1L);
 
-
     @Test
     void exceptions_of_creation() {
         assertThatThrownBy(() -> Ranking.of((GameId) null, 1))
