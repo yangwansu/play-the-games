@@ -16,7 +16,7 @@ import static org.slipp.masil.games.domains.HighLowResultOfTurn.*;
 import static org.slipp.masil.games.domains.PlayState.ENDED;
 import static org.slipp.masil.games.domains.PlayState.ON_GAME;
 
-public class HighLowPlay {
+public class HighLowPlayingContext {
 
     public static final Long INIT_VERSION = null;
     @Id
@@ -40,14 +40,14 @@ public class HighLowPlay {
     @Version
     private Long version;
 
-    public static HighLowPlay by(GameId gameId, String userName, LocalDateTime startAt, int target) {
-        return new HighLowPlay(null, gameId, userName, startAt, target, ON_GAME, Score.of(0), HighLowResultOfTurn.NONE, INIT_VERSION);
+    public static HighLowPlayingContext by(GameId gameId, String userName, LocalDateTime startAt, int target) {
+        return new HighLowPlayingContext(null, gameId, userName, startAt, target, ON_GAME, Score.of(0), HighLowResultOfTurn.NONE, INIT_VERSION);
     }
 
 
-    private HighLowPlay(Long id,
-                        GameId gameId, String userName, LocalDateTime startAt, int target, PlayState state, Score score,
-                        HighLowResultOfTurn highLowResultOfTurn, Long version) {
+    private HighLowPlayingContext(Long id,
+                                  GameId gameId, String userName, LocalDateTime startAt, int target, PlayState state, Score score,
+                                  HighLowResultOfTurn highLowResultOfTurn, Long version) {
         this.id = id;
         if (Objects.isNull(gameId) && Objects.isNull(userName)){
             throw new IllegalStateException(" is invalid");
@@ -103,12 +103,12 @@ public class HighLowPlay {
         this.highLowResultOfTurn = highLowResultOfTurn;
     }
 
-    private HighLowPlay setState(PlayState state, HighLowResultOfTurn resultOfTurn) {
-        return new HighLowPlay(getId(), getGameId(), getUserName(), getStartAt(), getTarget(), state, getScore(), resultOfTurn, getVersion());
+    private HighLowPlayingContext setState(PlayState state, HighLowResultOfTurn resultOfTurn) {
+        return new HighLowPlayingContext(getId(), getGameId(), getUserName(), getStartAt(), getTarget(), state, getScore(), resultOfTurn, getVersion());
     }
 
 
-    public HighLowPlay by(HighLowTurn turn) {
+    public HighLowPlayingContext by(HighLowTurn turn) {
         if (target > turn.getGuess()) {
             return setState(ON_GAME, LOW);
         } else if (target < turn.getGuess()) {

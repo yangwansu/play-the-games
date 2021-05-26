@@ -13,12 +13,12 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFOR
 
 @SpringBootTest
 @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
-class HighLowPlayRepositoryTest {
+class HighLowPlayingContextRepositoryTest {
 
 	@Autowired
-	HighLowPlayRepository repository;
+	HighLowPlayingContextRepository repository;
 
-	HighLowPlay play;
+	HighLowPlayingContext play;
 
 	@Test
 	void saveAndFind() {
@@ -26,10 +26,10 @@ class HighLowPlayRepositoryTest {
 		int target = 10;
 		GameId gameId = GameId.of(1L);
 		String userName = "Len";
-		play = HighLowPlay.by(gameId, userName, LocalDateTime.now(), target);
+		play = HighLowPlayingContext.by(gameId, userName, LocalDateTime.now(), target);
 
-		HighLowPlay save = repository.save(play);
-		HighLowPlay find = repository.findById(save.getId()).orElse(null);
+		HighLowPlayingContext save = repository.save(play);
+		HighLowPlayingContext find = repository.findById(save.getId()).orElse(null);
 
 		assertThat(find).isNotNull();
 	}

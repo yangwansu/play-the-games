@@ -14,18 +14,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.slipp.masil.games.domains.PlayState.ENDED;
 import static org.slipp.masil.games.domains.PlayState.ON_GAME;
 
-class HighLowPlayTest {
+class HighLowPlayingContextTest {
 
 
     String userName = "Mike";
     int target = 10;
-    HighLowPlay sut;
+    HighLowPlayingContext sut;
 
     @BeforeEach
     void setUp() {
         GameId gameId = GameId.of(1L);
         LocalDateTime startAt = LocalDateTime.now();
-        sut = HighLowPlay.by(gameId, userName, startAt, target);
+        sut = HighLowPlayingContext.by(gameId, userName, startAt, target);
 
         assertThat(sut.getGameId()).isEqualTo(gameId);
         assertThat(sut.getUserName()).isEqualTo(userName);
@@ -38,16 +38,16 @@ class HighLowPlayTest {
 
     @Test
     void guessByTurn() {
-        HighLowPlay guess1 = sut.by(HighLowTurn.of(1));
+        HighLowPlayingContext guess1 = sut.by(HighLowTurn.of(1));
         assertThat(guess1).isNotSameAs(sut);
         assertThat(guess1.getState()).isEqualTo(ON_GAME);
         assertThat(guess1.getHighLowResultOfTurn()).isEqualTo(HighLowResultOfTurn.isLow());
 
-        HighLowPlay guess11 = guess1.by(HighLowTurn.of(11));
+        HighLowPlayingContext guess11 = guess1.by(HighLowTurn.of(11));
         assertThat(guess11.getState()).isEqualTo(ON_GAME);
         assertThat(guess11.getHighLowResultOfTurn()).isEqualTo(HighLowResultOfTurn.isHigh());
 
-        HighLowPlay guess10 = guess11.by(HighLowTurn.of(10));
+        HighLowPlayingContext guess10 = guess11.by(HighLowTurn.of(10));
         assertThat(guess10.getState()).isEqualTo(ENDED);
         assertThat(guess10.getHighLowResultOfTurn()).isEqualTo(HighLowResultOfTurn.isMatched());
 
