@@ -8,25 +8,27 @@
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
-    id 'application'
+    id 'java'
     id 'org.hidetake.swagger.generator' version '2.18.2'
 
     id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
-
 repositories {
-    // Use JCenter for resolving dependencies.
     jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.25'  // or Swagger Codegen V3
+    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.25'
+    compileOnly "io.swagger.codegen.v3:swagger-codegen-generators:1.0.25"
+    //implementation "io.springfox:springfox-boot-starter:3.0.0"
+    //implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
 
-    // This dependency is used by the application.
     implementation 'com.google.guava:guava:29.0-jre'
 
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     runtimeOnly 'org.hsqldb:hsqldb'
 
@@ -39,23 +41,37 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
 }
 
-application {
-    // Define the main class for the application.
-    mainClass = 'org.slipp.masil.baseball.App'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+    sourceCompatibility ='1.8'
+    targetCompatibility = '1.8'
 }
 
 tasks.named('test') {
-    // Use junit platform for unit tests.
     useJUnitPlatform()
 }
 
 
 swaggerSources {
-    petstore {
+    api {
         inputFile = file('src/main/swagger/api.yml')
         code {
             language = 'spring'
+            configFile = file("src/main/swagger/config.json")
+            outputDir = file("src/main/swagger/.generated")
+
+            dependsOn validation
         }
 
+        reDoc {
+            title = 'API Documents'
+            outputDir = file("src/main/swagger/.generated/src/main/resources/static/swagger")
+
+            dependsOn validation
+        }
     }
 }
+
+compileJava.dependsOn generateSwaggerCode, generateReDoc
+sourceSets.main.java.srcDir "${swaggerSources.api.code.outputDir}/src/main/java"
+sourceSets.main.resources.srcDir "${swaggerSources.api.code.outputDir}/src/main/resources"
