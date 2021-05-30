@@ -1,3 +1,9 @@
 logging:
   level:
     root: info
+
+
+spring:
+  web:
+    resources:
+      static-locations: classpath:/swagger, classpath:/static

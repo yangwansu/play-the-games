@@ -23,6 +23,7 @@ repositories {
 dependencies {
     swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.25'
     compileOnly "io.swagger.codegen.v3:swagger-codegen-generators:1.0.25"
+    swaggerUI 'org.webjars:swagger-ui:3.10.0'
     //implementation "io.springfox:springfox-boot-starter:3.0.0"
     //implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
 
@@ -59,19 +60,26 @@ swaggerSources {
             language = 'spring'
             configFile = file("src/main/swagger/config.json")
             outputDir = file("src/main/swagger/.generated")
+            wipeOutputDir = false
+
+            dependsOn validation
+        }
+
+        ui {
+            outputDir = file("src/main/swagger/.generated/src/main/resources/swagger/swagger-ui")
 
             dependsOn validation
         }
 
         reDoc {
             title = 'API Documents'
-            outputDir = file("src/main/swagger/.generated/src/main/resources/static/swagger")
+            outputDir = file("src/main/swagger/.generated/src/main/resources/swagger/redoc")
 
             dependsOn validation
         }
     }
 }
 
-compileJava.dependsOn generateSwaggerCode, generateReDoc
+compileJava.dependsOn generateSwaggerCode, generateSwaggerUI, generateReDoc
 sourceSets.main.java.srcDir "${swaggerSources.api.code.outputDir}/src/main/java"
 sourceSets.main.resources.srcDir "${swaggerSources.api.code.outputDir}/src/main/resources"
