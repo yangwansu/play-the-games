@@ -9,7 +9,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'java'
-    id 'org.hidetake.swagger.generator' version '2.18.2'
+    id "org.openapi.generator" version "4.3.1"
 
     id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
@@ -21,11 +21,11 @@ repositories {
 }
 
 dependencies {
-    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.25'
-    compileOnly "io.swagger.codegen.v3:swagger-codegen-generators:1.0.25"
-    swaggerUI 'org.webjars:swagger-ui:3.10.0'
-    //implementation "io.springfox:springfox-boot-starter:3.0.0"
-    //implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+    //fixed for swagger
+    compileOnly 'io.swagger:swagger-annotations:1.6.1'
+    compileOnly 'jakarta.validation:jakarta.validation-api:2.0.2'
+    compileOnly 'org.openapitools:jackson-databind-nullable:0.1.0'
+
 
     implementation 'com.google.guava:guava:29.0-jre'
 
@@ -44,7 +44,7 @@ dependencies {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-    sourceCompatibility ='1.8'
+    sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
 }
 
@@ -52,34 +52,19 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-
-swaggerSources {
-    api {
-        inputFile = file('src/main/swagger/api.yml')
-        code {
-            language = 'spring'
-            configFile = file("src/main/swagger/config.json")
-            outputDir = file("src/main/swagger/.generated")
-            wipeOutputDir = false
-
-            dependsOn validation
-        }
-
-        ui {
-            outputDir = file("src/main/swagger/.generated/src/main/resources/swagger/swagger-ui")
-
-            dependsOn validation
-        }
-
-        reDoc {
-            title = 'API Documents'
-            outputDir = file("src/main/swagger/.generated/src/main/resources/swagger/redoc")
-
-            dependsOn validation
-        }
-    }
+openApiValidate {
+    inputSpec="$projectDir/src/main/swagger/api.yml"
+    recommend=true
+}
+openApiGenerate {
+    inputSpec="$projectDir/src/main/swagger/api.yml"
+    generatorName = "spring"
+    configFile= "$projectDir/src/main/swagger/config.json"
+    outputDir= "$projectDir/src/main/swagger/.generated"
 }
 
-compileJava.dependsOn generateSwaggerCode, generateSwaggerUI, generateReDoc
-sourceSets.main.java.srcDir "${swaggerSources.api.code.outputDir}/src/main/java"
-sourceSets.main.resources.srcDir "${swaggerSources.api.code.outputDir}/src/main/resources"
+tasks.openApiGenerate.dependsOn tasks.openApiValidate
+compileJava.dependsOn tasks.openApiGenerate
+
+sourceSets.main.java.srcDir "${openApiGenerate.outputDir.get()}/src/main/java"
+sourceSets.main.resources.srcDir "${openApiGenerate.outputDir.get()}/src/main/resources"

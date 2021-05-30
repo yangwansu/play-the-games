@@ -8,12 +8,16 @@
   "apiPackage": "org.slipp.masil.games.apis",
   "invokerPackage": "org.slipp.masil.games.apis",
   "java8" : true,
-  "useTags" : "true",
-  "defaultInterfaces" : false,
+  "useTags" : true,
+  "skipDefaultInterface" : true,
   "dateLibrary": "java8",
   "useBeanValidation" : true,
   "serializableModel" : true,
   "implicitHeaders" : false,
   "swaggerDocketConfig": false,
-  "hideGenerationTimestamp": true
+  "hideGenerationTimestamp": true,
+
+  "useSpringfox": false,
+  "reactive": false,
+  "openApiNullable" : false
 }
