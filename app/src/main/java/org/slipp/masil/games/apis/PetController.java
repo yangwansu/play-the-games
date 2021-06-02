@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class PetController implements PetsApi{
+public class PetController implements PetsApi {
 
     @Override
     public ResponseEntity<Void> createPets() {

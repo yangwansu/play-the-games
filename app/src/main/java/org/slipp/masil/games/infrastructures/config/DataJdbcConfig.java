@@ -9,7 +9,7 @@ import org.springframework.data.jdbc.repository.config.AbstractJdbcConfiguration
 import java.util.Arrays;
 
 @Configuration
-public class DataJdbcConfig  extends AbstractJdbcConfiguration{
+public class DataJdbcConfig extends AbstractJdbcConfiguration {
 
     @Bean
     public JdbcCustomConversions jdbcCustomConversions() {

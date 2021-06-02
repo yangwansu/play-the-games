@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Value(staticConstructor = "of")
-public class RankingItem implements Comparable<RankingItem>{
+public class RankingItem implements Comparable<RankingItem> {
 
     public static final RankingItem NONE_RANK_ITEM = RankingItem.of("--", Score.of(-1), null);
 

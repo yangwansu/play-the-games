@@ -21,7 +21,10 @@ public class HighLowPlayingContext {
     public static final Long INIT_VERSION = null;
     @Id
     @Getter
-    private Long id;
+    private final Long id;
+    @Getter
+    @Version
+    private final Long version;
     @Getter
     private GameId gameId;
     @Getter
@@ -36,20 +39,12 @@ public class HighLowPlayingContext {
     private Score score;
     @Getter
     private HighLowResultOfTurn highLowResultOfTurn;
-    @Getter
-    @Version
-    private Long version;
-
-    public static HighLowPlayingContext by(GameId gameId, String userName, LocalDateTime startAt, int target) {
-        return new HighLowPlayingContext(null, gameId, userName, startAt, target, ON_GAME, Score.of(0), HighLowResultOfTurn.NONE, INIT_VERSION);
-    }
-
 
     private HighLowPlayingContext(Long id,
                                   GameId gameId, String userName, LocalDateTime startAt, int target, PlayState state, Score score,
                                   HighLowResultOfTurn highLowResultOfTurn, Long version) {
         this.id = id;
-        if (Objects.isNull(gameId) && Objects.isNull(userName)){
+        if (Objects.isNull(gameId) && Objects.isNull(userName)) {
             throw new IllegalStateException(" is invalid");
         }
         setGameId(gameId);
@@ -60,6 +55,10 @@ public class HighLowPlayingContext {
         setScore(score);
         setHighLowResultOfTurn(highLowResultOfTurn);
         this.version = version;
+    }
+
+    public static HighLowPlayingContext by(GameId gameId, String userName, LocalDateTime startAt, int target) {
+        return new HighLowPlayingContext(null, gameId, userName, startAt, target, ON_GAME, Score.of(0), HighLowResultOfTurn.NONE, INIT_VERSION);
     }
 
     private void setStartAt(LocalDateTime startAt) {
@@ -76,7 +75,7 @@ public class HighLowPlayingContext {
     }
 
     private void setTarget(int target) {
-        if (target < 0){
+        if (target < 0) {
             throw new IllegalStateException("target is invalid");
         }
         this.target = target;
@@ -104,9 +103,9 @@ public class HighLowPlayingContext {
     }
 
     private HighLowPlayingContext setState(PlayState state, HighLowResultOfTurn resultOfTurn) {
-        return new HighLowPlayingContext(getId(), getGameId(), getUserName(), getStartAt(), getTarget(), state, getScore(), resultOfTurn, getVersion());
+        return new HighLowPlayingContext(getId(), getGameId(), getUserName(), getStartAt(), getTarget(), state,
+                getScore(), resultOfTurn, getVersion());
     }
-
 
     public HighLowPlayingContext by(HighLowTurn turn) {
         if (target > turn.getGuess()) {

@@ -42,6 +42,7 @@ public class Converters {
     @ReadingConverter
     public enum IntegerToScore implements Converter<Integer, Score> {
         INSTANCE;
+
         @Override
         public Score convert(Integer source) {
             return Score.of(source);
@@ -67,5 +68,4 @@ public class Converters {
             return GameId.of(source);
         }
     }
-
 }

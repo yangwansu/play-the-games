@@ -19,6 +19,21 @@ import static org.slipp.masil.games.domains.ranking.RankingItem.NONE_RANK_ITEM;
 public class Ranking {
 
     public static final Long INIT_VERSION = null;
+    @Id
+    private RankingId id;
+    private int size;
+    @Column("RANKING_ID")
+    private List<RankingItem> items;
+    @Version
+    private Long version;
+
+    @PersistenceConstructor
+    private Ranking(RankingId id, int size, List<RankingItem> items, Long version) {
+        setId(id);
+        setSize(size);
+        setItems(items);
+        setVersion(version);
+    }
 
     @Deprecated
     public static Ranking of(RankingId id, int size) {
@@ -37,28 +52,9 @@ public class Ranking {
         return items;
     }
 
-    @Id
-    private RankingId id;
-
-    private int size;
-
-    @Column("RANKING_ID")
-    private List<RankingItem> items;
-
-    @Version
-    private Long version;
-
-    @PersistenceConstructor
-    private Ranking(RankingId id, int size, List<RankingItem> items, Long version) {
-        setId(id);
-        setSize(size);
-        setItems(items);
-        setVersion(version);
-    }
-
     //guard
     private void setSize(int size) {
-        if(size <= 0) {
+        if (size <= 0) {
             throw new IllegalArgumentException("the size of ranking must be greater than zero.");
         }
         this.size = size;
@@ -66,21 +62,14 @@ public class Ranking {
 
     //guard
     private void setId(RankingId id) {
-        if(id == null || id.getGameId() == null || id.getGameId().getId() == null) {
-            throw new IllegalArgumentException("id is invalid : "+id);
+        if (id == null || id.getGameId() == null || id.getGameId().getId() == null) {
+            throw new IllegalArgumentException("id is invalid : " + id);
         }
         this.id = id;
     }
 
-    private void setItems(List<RankingItem> items) {
-        if(items.size() != getSize()) {
-            throw new IllegalArgumentException();
-        }
-        this.items = items;
-    }
-
     private void setVersion(Long version) {
-        if(version !=null && version < 0) {
+        if (version != null && version < 0) {
             throw new IllegalArgumentException();
         }
         this.version = version;
@@ -104,5 +93,12 @@ public class Ranking {
 
     public List<RankingItem> getItems() {
         return Collections.unmodifiableList(items);
+    }
+
+    private void setItems(List<RankingItem> items) {
+        if (items.size() != getSize()) {
+            throw new IllegalArgumentException();
+        }
+        this.items = items;
     }
 }
