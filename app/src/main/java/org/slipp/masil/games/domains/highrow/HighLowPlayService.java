@@ -2,7 +2,6 @@ package org.slipp.masil.games.domains.highrow;
 
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class HighLowPlayService {
 
@@ -21,18 +20,15 @@ public class HighLowPlayService {
     }
 
     public void stop(HighLowPlayStop highLowPlayStop) {
-        Optional<HighLowPlayingContext> context = contextRepository.findById(highLowPlayStop.getContextId());
-        context.ifPresent((c) -> {
-            c.stop();
-            contextRepository.save(c);
-        });
+        HighLowPlayingContext context = contextRepository.findById(highLowPlayStop.getContextId());
+        context.stop();
+        contextRepository.save(context);
     }
 
     public HighLowPlayingResult play(HighLowNumberGuess guess) {
         HighLowJudgement judgement = this.judge.judge(guess.getGuessNumber());
         if (judgement == HighLowJudgement.MATCH) {
-            HighLowPlayingContext context = contextRepository.findById(guess.getContextId())
-                    .orElseThrow(IllegalStateException::new);
+            HighLowPlayingContext context = contextRepository.findById(guess.getContextId());
             context.match();
             contextRepository.save(context);
         }

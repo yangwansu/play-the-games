@@ -1,7 +1,8 @@
 package org.slipp.masil.games.domains.highrow;
 
-import org.springframework.data.repository.CrudRepository;
+public interface HighLowPlayingContextRepository {
 
-public interface HighLowPlayingContextRepository extends CrudRepository<HighLowPlayingContext, Long> {
+    HighLowPlayingContext save(HighLowPlayingContext highLowPlayingContext);
 
+    HighLowPlayingContext findById(Long id);
 }
