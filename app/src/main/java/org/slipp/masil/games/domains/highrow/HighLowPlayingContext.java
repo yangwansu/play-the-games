@@ -130,4 +130,8 @@ public class HighLowPlayingContext {
     public void stop() {
 
     }
+
+    public void match() {
+
+    }
 }
