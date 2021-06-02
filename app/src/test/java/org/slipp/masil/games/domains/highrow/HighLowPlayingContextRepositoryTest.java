@@ -29,7 +29,7 @@ class HighLowPlayingContextRepositoryTest {
 		play = HighLowPlayingContext.by(gameId, userName, LocalDateTime.now(), target);
 
 		HighLowPlayingContext save = repository.save(play);
-		HighLowPlayingContext find = repository.findById(save.getId()).orElse(null);
+		HighLowPlayingContext find = repository.findById(save.getId());
 
 		assertThat(find).isNotNull();
 	}

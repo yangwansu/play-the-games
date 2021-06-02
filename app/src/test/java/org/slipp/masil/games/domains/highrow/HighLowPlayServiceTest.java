@@ -76,7 +76,7 @@ class HighLowPlayServiceTest {
 
     @Test
     void play3() {
-        given(repository.findById(ANY_GUESS_NUMBER)).willReturn(Optional.ofNullable(context));
+        given(repository.findById(ANY_GUESS_NUMBER)).willReturn(context);
         HighLowJudge judge= mock(HighLowJudge.class);
         given(judge.judge(ANY_GUESS_NUMBER)).willReturn(MATCH);
         sut.setJudge(judge);
@@ -90,7 +90,7 @@ class HighLowPlayServiceTest {
         //TODO result 는 왜 리턴하느냐? high? low? matched! contextId,
     @Test
     void stop() {
-        given(repository.findById(1L)).willReturn(Optional.ofNullable(context));
+        given(repository.findById(1L)).willReturn(context);
         given(repository.save(any(HighLowPlayingContext.class))).willReturn(context);
 
         HighLowPlayStop highLowPlayStop = new HighLowPlayStop(ANY_CTX_ID);
