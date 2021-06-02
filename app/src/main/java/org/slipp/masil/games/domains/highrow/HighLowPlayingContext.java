@@ -126,4 +126,8 @@ public class HighLowPlayingContext {
             throw new IllegalStateException("play has already ended");
         }
     }
+
+    public void stop() {
+
+    }
 }

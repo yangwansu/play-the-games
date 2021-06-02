@@ -22,7 +22,7 @@ public class HighLowPlayService {
     public void stop(HighLowStop highLowStop) {
         Optional<HighLowPlayingContext> context = contextRepository.findById(highLowStop.getContextId());
         context.ifPresent((c)->{
-            // TODO c.stop();
+            c.stop();
             contextRepository.save(c);
         });
 

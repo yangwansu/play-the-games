@@ -3,6 +3,7 @@ package org.slipp.masil.games.domains.highrow;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -11,8 +12,11 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 
+//TODO start command 가 널 일때
+//TODO stop 시 context 를 찾지 못했을때
 @ExtendWith(MockitoExtension.class)
 class HighLowPlayServiceTest {
 
@@ -31,7 +35,6 @@ class HighLowPlayServiceTest {
         given(repository.save(any(HighLowPlayingContext.class))).willReturn(context);
     }
 
-    //TODO start command 가 널 일때
     @Test
     void start() {
         given(context.getId()).willReturn(1L); //TODO  명시적이지 않음
@@ -44,13 +47,14 @@ class HighLowPlayServiceTest {
     }
 
 
-    //TODO stop 시 context 를 찾지 못했을때
     @Test
     void stop() {
         HighLowStop highLowStop = new HighLowStop(1L);
         sut.stop(highLowStop);
 
-        verify(repository).findById(highLowStop.getContextId());
-        verify(repository).save(any(HighLowPlayingContext.class));
+        InOrder inOrder = inOrder(context, repository);
+        inOrder.verify(repository).findById(highLowStop.getContextId());
+        inOrder.verify(context).stop();
+        inOrder.verify(repository).save(any(HighLowPlayingContext.class));
     }
 }
