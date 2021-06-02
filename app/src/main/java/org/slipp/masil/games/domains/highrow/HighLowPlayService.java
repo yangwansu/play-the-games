@@ -19,8 +19,8 @@ public class HighLowPlayService {
         return saved.getId();
     }
 
-    public void stop(HighLowStop highLowStop) {
-        Optional<HighLowPlayingContext> context = contextRepository.findById(highLowStop.getContextId());
+    public void stop(HighLowPlayStop highLowPlayStop) {
+        Optional<HighLowPlayingContext> context = contextRepository.findById(highLowPlayStop.getContextId());
         context.ifPresent((c)->{
             c.stop();
             contextRepository.save(c);

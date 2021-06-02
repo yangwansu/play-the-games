@@ -49,11 +49,11 @@ class HighLowPlayServiceTest {
 
     @Test
     void stop() {
-        HighLowStop highLowStop = new HighLowStop(1L);
-        sut.stop(highLowStop);
+        HighLowPlayStop highLowPlayStop = new HighLowPlayStop(1L);
+        sut.stop(highLowPlayStop);
 
         InOrder inOrder = inOrder(context, repository);
-        inOrder.verify(repository).findById(highLowStop.getContextId());
+        inOrder.verify(repository).findById(highLowPlayStop.getContextId());
         inOrder.verify(context).stop();
         inOrder.verify(repository).save(any(HighLowPlayingContext.class));
     }
