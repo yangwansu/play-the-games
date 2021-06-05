@@ -41,7 +41,7 @@ class HighLowPlayServicePlayTest {
     }
 
     @Test
-    void play() {
+    void in_high_judgement_the_context_makes_nothing() {
         given(judge.judge(guessCommand.getGuessNumber())).willReturn(HIGH);
 
         HighLowPlayingResult result = sut.play(guessCommand);
@@ -52,7 +52,7 @@ class HighLowPlayServicePlayTest {
     }
 
     @Test
-    void play2() {
+    void in_low_judgement_the_context_makes_nothing() {
         given(judge.judge(guessCommand.getGuessNumber())).willReturn(LOW);
 
         HighLowPlayingResult result = sut.play(guessCommand);
@@ -63,7 +63,7 @@ class HighLowPlayServicePlayTest {
     }
 
     @Test
-    void play3() {
+    void in_match_judgement_the_context_occurs_command_to_match() {
         given(judge.judge(guessCommand.getGuessNumber())).willReturn(MATCH);
 
         HighLowPlayingResult result = sut.play(guessCommand);
