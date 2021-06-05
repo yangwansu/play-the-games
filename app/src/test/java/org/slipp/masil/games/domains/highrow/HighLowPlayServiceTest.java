@@ -52,6 +52,8 @@ class HighLowPlayServiceTest {
 
     @Test
     void play() {
+        given(repository.findById(ANY_GUESS_NUMBER)).willReturn(context);
+
         HighLowJudge judge= mock(HighLowJudge.class);
         given(judge.judge(ANY_GUESS_NUMBER)).willReturn(HIGH);
         sut.setJudge(judge);
@@ -64,6 +66,8 @@ class HighLowPlayServiceTest {
 
     @Test
     void play2() {
+        given(repository.findById(ANY_GUESS_NUMBER)).willReturn(context);
+
         HighLowJudge judge= mock(HighLowJudge.class);
         given(judge.judge(ANY_GUESS_NUMBER)).willReturn(LOW);
         sut.setJudge(judge);
@@ -77,6 +81,7 @@ class HighLowPlayServiceTest {
     @Test
     void play3() {
         given(repository.findById(ANY_GUESS_NUMBER)).willReturn(context);
+
         HighLowJudge judge= mock(HighLowJudge.class);
         given(judge.judge(ANY_GUESS_NUMBER)).willReturn(MATCH);
         sut.setJudge(judge);

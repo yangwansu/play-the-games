@@ -26,9 +26,9 @@ public class HighLowPlayService {
     }
 
     public HighLowPlayingResult play(HighLowNumberGuess guess) {
+        HighLowPlayingContext context = contextRepository.findById(guess.getContextId());
         HighLowJudgement judgement = this.judge.judge(guess.getGuessNumber());
         if (judgement == HighLowJudgement.MATCH) {
-            HighLowPlayingContext context = contextRepository.findById(guess.getContextId());
             context.match();
             contextRepository.save(context);
         }
