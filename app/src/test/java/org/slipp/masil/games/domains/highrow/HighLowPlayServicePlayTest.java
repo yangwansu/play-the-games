@@ -33,8 +33,7 @@ class HighLowPlayServicePlayTest {
 
     @BeforeEach
     void setUp() {
-        sut = new HighLowPlayService(repository);
-        sut.setJudge(judge);
+        sut = new HighLowPlayService(judge, repository);
         given(repository.findById(ANY_GUESS_NUMBER)).willReturn(context);
 
         guessCommand = HighLowNumberGuess.of(context.getId(), ANY_GUESS_NUMBER);

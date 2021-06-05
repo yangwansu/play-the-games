@@ -35,8 +35,7 @@ class HighLowPlayServiceStartTest {
 
     @BeforeEach
     void setUp() {
-        sut = new HighLowPlayService(repository);
-        sut.setJudge(judge);
+        sut = new HighLowPlayService(judge, repository);
     }
 
     @Test

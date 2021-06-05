@@ -8,7 +8,8 @@ public class HighLowPlayService {
     private final HighLowPlayingContextRepository contextRepository;
     private HighLowJudge judge;
 
-    public HighLowPlayService(HighLowPlayingContextRepository contextRepository) {
+    public HighLowPlayService(HighLowJudge judge, HighLowPlayingContextRepository contextRepository) {
+        this.judge = judge;
         this.contextRepository = contextRepository;
     }
 
@@ -35,7 +36,4 @@ public class HighLowPlayService {
         return new HighLowPlayingResult(guess.getContextId(), judgement);
     }
 
-    public void setJudge(HighLowJudge judge) {
-        this.judge = judge;
-    }
 }
