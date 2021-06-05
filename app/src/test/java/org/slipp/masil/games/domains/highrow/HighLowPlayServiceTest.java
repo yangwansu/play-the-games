@@ -31,11 +31,15 @@ class HighLowPlayServiceTest {
     @Mock
     HighLowPlayingContext context;
 
+    @Mock
+    HighLowJudge judge;
+
     HighLowPlayService sut;
 
     @BeforeEach
     void setUp() {
         sut = new HighLowPlayService(repository);
+        sut.setJudge(judge);
     }
 
     @Test
@@ -53,15 +57,11 @@ class HighLowPlayServiceTest {
     @Test
     void play() {
         given(repository.findById(ANY_GUESS_NUMBER)).willReturn(context);
-
-        HighLowJudge judge= mock(HighLowJudge.class);
-        sut.setJudge(judge);
-
         given(judge.judge(ANY_GUESS_NUMBER)).willReturn(HIGH);
 
         HighLowPlayingResult result = sut.play(HighLowNumberGuess.of(context.getId(), ANY_GUESS_NUMBER));
-        assertThat(result.getJudgement()).isEqualTo(HIGH);
 
+        assertThat(result.getJudgement()).isEqualTo(HIGH);
         verify(context, never()).match();
         verify(repository, never()).save(any(HighLowPlayingContext.class));
     }
@@ -69,15 +69,11 @@ class HighLowPlayServiceTest {
     @Test
     void play2() {
         given(repository.findById(ANY_GUESS_NUMBER)).willReturn(context);
-
-        HighLowJudge judge= mock(HighLowJudge.class);
-        sut.setJudge(judge);
-
         given(judge.judge(ANY_GUESS_NUMBER)).willReturn(LOW);
 
         HighLowPlayingResult result = sut.play(HighLowNumberGuess.of(context.getId(), ANY_GUESS_NUMBER));
-        assertThat(result.getJudgement()).isEqualTo(LOW);
 
+        assertThat(result.getJudgement()).isEqualTo(LOW);
         verify(context, never()).match();
         verify(repository, never()).save(any(HighLowPlayingContext.class));
     }
@@ -85,14 +81,11 @@ class HighLowPlayServiceTest {
     @Test
     void play3() {
         given(repository.findById(ANY_GUESS_NUMBER)).willReturn(context);
-        HighLowJudge judge= mock(HighLowJudge.class);
-        sut.setJudge(judge);
-
         given(judge.judge(ANY_GUESS_NUMBER)).willReturn(MATCH);
 
         HighLowPlayingResult result = sut.play(HighLowNumberGuess.of(context.getId(), ANY_GUESS_NUMBER));
-        assertThat(result.getJudgement()).isEqualTo(MATCH);
 
+        assertThat(result.getJudgement()).isEqualTo(MATCH);
         verify(context).match();
         verify(repository).save(any(HighLowPlayingContext.class));
     }
