@@ -7,7 +7,6 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.inOrder;
@@ -31,36 +30,37 @@ class HighLowPlayServiceStartTest {
     @Mock
     HighLowJudge judge;
 
+    @Mock
+    HighLowPlayingContextFactory contextFactory;
+
     HighLowPlayService sut;
 
     @BeforeEach
     void setUp() {
-        sut = new HighLowPlayService(judge, repository);
+        sut = new HighLowPlayService(judge, contextFactory, repository);
     }
+
+    HighLowPlayStart command = new HighLowPlayStart("Foo");
 
     @Test
     void start() {
-        given(context.getId()).willReturn(ANY_CTX_ID);
-        given(repository.save(any(HighLowPlayingContext.class))).willReturn(context);
+        given(contextFactory.create(command)).willReturn(context);
+        sut.start(command);
 
-        HighLowPlayStart highLowStart = new HighLowPlayStart("Foo");
-        Long contextId = sut.start(highLowStart);
-
-        assertThat(contextId).isEqualTo(ANY_CTX_ID);
-        verify(repository).save(any(HighLowPlayingContext.class));
+        verify(context).start();
+        verify(repository).save(context);
     }
 
     @Test
     void stop() {
         given(repository.findById(1L)).willReturn(context);
-        given(repository.save(any(HighLowPlayingContext.class))).willReturn(context);
 
-        HighLowPlayStop highLowPlayStop = new HighLowPlayStop(ANY_CTX_ID);
-        sut.stop(highLowPlayStop);
+        HighLowPlayStop command = new HighLowPlayStop(ANY_CTX_ID);
+        sut.stop(command);
 
         InOrder inOrder = inOrder(context, repository);
-        inOrder.verify(repository).findById(highLowPlayStop.getContextId());
+        inOrder.verify(repository).findById(command.getContextId());
         inOrder.verify(context).stop();
-        inOrder.verify(repository).save(any(HighLowPlayingContext.class));
+        inOrder.verify(repository).save(context);
     }
 }

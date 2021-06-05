@@ -96,6 +96,9 @@ public class HighLowPlayingContext {
             throw new IllegalStateException("play has already ended");
         }
     }
+    public void start() {
+
+    }
 
     public void stop() {
 
@@ -104,4 +107,5 @@ public class HighLowPlayingContext {
     public void match() {
 
     }
+
 }

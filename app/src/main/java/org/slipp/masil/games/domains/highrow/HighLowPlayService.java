@@ -1,23 +1,27 @@
 package org.slipp.masil.games.domains.highrow;
 
 
-import java.time.LocalDateTime;
-
 public class HighLowPlayService {
 
-    private final HighLowPlayingContextRepository contextRepository;
     private HighLowJudge judge;
+    private final HighLowPlayingContextFactory contextFactory;
+    private final HighLowPlayingContextRepository contextRepository;
 
     public HighLowPlayService(HighLowJudge judge, HighLowPlayingContextRepository contextRepository) {
+        this(judge, HighLowPlayingContextFactory.DEFAULT, contextRepository);
+    }
+
+    public HighLowPlayService(HighLowJudge judge, HighLowPlayingContextFactory contextFactory, HighLowPlayingContextRepository contextRepository) {
         this.judge = judge;
+        this.contextFactory = contextFactory;
         this.contextRepository = contextRepository;
     }
 
     public Long start(HighLowPlayStart highLowStart) {
-        HighLowPlayingContext context = HighLowPlayingContext.by(highLowStart.getGameId(), highLowStart.getUsername(),
-                LocalDateTime.now(), 10);
-        HighLowPlayingContext saved = contextRepository.save(context);
-        return saved.getId();
+        HighLowPlayingContext context = contextFactory.create(highLowStart);
+        context.start();
+        contextRepository.save(context);
+        return context.getId();
     }
 
     public void stop(HighLowPlayStop highLowPlayStop) {
