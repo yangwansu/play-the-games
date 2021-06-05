@@ -61,6 +61,7 @@ class HighLowPlayServiceTest {
         HighLowPlayingResult result = sut.play(HighLowNumberGuess.of(context.getId(), ANY_GUESS_NUMBER));
         assertThat(result.getJudgement()).isEqualTo(HIGH);
 
+        verify(context, never()).match();
         verify(repository, never()).save(any(HighLowPlayingContext.class));
     }
 
@@ -75,6 +76,7 @@ class HighLowPlayServiceTest {
         HighLowPlayingResult result = sut.play(HighLowNumberGuess.of(context.getId(), ANY_GUESS_NUMBER));
         assertThat(result.getJudgement()).isEqualTo(LOW);
 
+        verify(context, never()).match();
         verify(repository, never()).save(any(HighLowPlayingContext.class));
     }
 
@@ -89,6 +91,7 @@ class HighLowPlayServiceTest {
         HighLowPlayingResult result = sut.play(HighLowNumberGuess.of(context.getId(), ANY_GUESS_NUMBER));
         assertThat(result.getJudgement()).isEqualTo(MATCH);
 
+        verify(context).match();
         verify(repository).save(any(HighLowPlayingContext.class));
     }
 
