@@ -6,6 +6,7 @@ import org.slipp.masil.games.domains.Score;
 import org.slipp.masil.games.domains.game.GameId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import java.util.Objects;
 import static org.slipp.masil.games.domains.PlayState.ENDED;
 import static org.slipp.masil.games.domains.PlayState.ON_GAME;
 
-public class HighLowPlayingContext {
+public class HighLowPlayingContext extends AbstractAggregateRoot<HighLowPlayingContext> {
 
     public static final Long INIT_VERSION = null;
     @Id
@@ -97,11 +98,11 @@ public class HighLowPlayingContext {
         }
     }
     public void start() {
-
+        andEvent(new StartedHighLowPlay(this));
     }
 
     public void stop() {
-
+        //this.andEvent(null).
     }
 
     public void match() {
