@@ -102,11 +102,11 @@ public class HighLowPlayingContext extends AbstractAggregateRoot<HighLowPlayingC
     }
 
     public void stop() {
-        //this.andEvent(null).
+        andEvent(new StoppedHighLowPlay(this));
     }
 
     public void match() {
-
+        andEvent(new MatchedHighLowPlay(this));
     }
 
 }
