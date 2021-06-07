@@ -28,7 +28,7 @@ dependencies {
     compileOnly 'jakarta.validation:jakarta.validation-api:2.0.2'
     compileOnly 'org.openapitools:jackson-databind-nullable:0.1.0'
 
-
+    implementation 'com.google.code.gson:gson'
     implementation 'com.google.guava:guava:29.0-jre'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'

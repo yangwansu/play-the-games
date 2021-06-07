@@ -1,4 +1,6 @@
 package org.slipp.masil.games.infrastructures.events;
 
-public class EventStore {
+public interface EventStore {
+
+    void save(EventEnvelop anEventEnvelop);
 }
