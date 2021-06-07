@@ -90,18 +90,12 @@ public class HighLowPlayingContext extends AbstractAggregateRoot<HighLowPlayingC
         this.score = score;
     }
 
-    public void exit() {
-        if (this.state.equals(ON_GAME)) {
-            this.state = ENDED;
-        } else if (this.state.equals(ENDED)) {
-            throw new IllegalStateException("play has already ended");
-        }
-    }
     public void start() {
         andEvent(new StartedHighLowPlay(this));
     }
 
     public void stop() {
+        this.setState(ENDED);
         andEvent(new StoppedHighLowPlay(this));
     }
 

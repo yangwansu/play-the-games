@@ -27,4 +27,10 @@ public class HighLowApplicationService {
         HighLowPlayStart command = new HighLowPlayStart("Foo");
         getHighLowPlayService().start(command);
     }
+
+    @Transactional
+    public void exit() {
+        HighLowPlayStart command = new HighLowPlayStart("Foo");
+        getHighLowPlayService().start(command);
+    }
 }

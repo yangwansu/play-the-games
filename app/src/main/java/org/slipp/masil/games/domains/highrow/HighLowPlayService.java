@@ -1,6 +1,8 @@
 package org.slipp.masil.games.domains.highrow;
 
 
+import org.slipp.masil.games.domains.PlayState;
+
 public class HighLowPlayService {
 
     private HighLowJudge judge;
@@ -26,8 +28,16 @@ public class HighLowPlayService {
 
     public void stop(HighLowPlayStop highLowPlayStop) {
         HighLowPlayingContext context = contextRepository.findById(highLowPlayStop.getContextId());
+        if (context.getState().equals(PlayState.ENDED)){
+            throw new IllegalStateException("already ended game");
+        }
+
         context.stop();
         contextRepository.save(context);
+    }
+
+    public void exit(HighLowPlayStop highLowPlayStop) {
+
     }
 
     public HighLowPlayingResult play(HighLowNumberGuess guess) {
@@ -39,5 +49,4 @@ public class HighLowPlayService {
         }
         return new HighLowPlayingResult(guess.getContextId(), judgement);
     }
-
 }
