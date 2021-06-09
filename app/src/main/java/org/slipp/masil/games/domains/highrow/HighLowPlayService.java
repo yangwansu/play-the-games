@@ -25,7 +25,7 @@ public class HighLowPlayService {
         contextRepository.save(context);
         return context.getId();
     }
-
+    // TODO 도메인 상으로 내려야 한다.
     public void stop(HighLowPlayStop highLowPlayStop) {
         HighLowPlayingContext context = contextRepository.findById(highLowPlayStop.getContextId());
         if (context.getState().equals(PlayState.ENDED)){
@@ -34,10 +34,6 @@ public class HighLowPlayService {
 
         context.stop();
         contextRepository.save(context);
-    }
-
-    public void exit(HighLowPlayStop highLowPlayStop) {
-
     }
 
     public HighLowPlayingResult play(HighLowNumberGuess guess) {

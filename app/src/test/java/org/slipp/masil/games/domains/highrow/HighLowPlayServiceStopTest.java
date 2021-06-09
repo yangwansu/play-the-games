@@ -64,10 +64,4 @@ public class HighLowPlayServiceStopTest {
         exitInOrder.verify(repository).findById(command.getContextId());
         exitInOrder.verify(repository, never()).save(context);
     }
-
-    // TODO 게임을 완전히 나갈 때 어떻게?
-    @Test
-    void stop_when_playing_is_over() {
-        sut.exit(command);
-    }
 }
