@@ -6,7 +6,7 @@ import org.slipp.masil.games.domains.highrow.HighLowPlayingContext;
 import org.slipp.masil.games.domains.highrow.HighLowPlayingContextFactory;
 import org.slipp.masil.games.domains.highrow.StartedHighLowPlay;
 import org.slipp.masil.games.infrastructures.events.EventEnvelop;
-import org.slipp.masil.games.infrastructures.events.EventStore;
+import org.slipp.masil.games.infrastructures.events.sotre.EventStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
