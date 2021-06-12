@@ -27,7 +27,7 @@ class HighLowPlayServicePlayTest {
     @Mock
     HighLowJudge judge;
 
-    HighLowNumberGuess guessCommand;
+    GuessHighLowNumber guessCommand;
 
     HighLowPlayService sut;
 
@@ -36,7 +36,7 @@ class HighLowPlayServicePlayTest {
         sut = new HighLowPlayService(judge, repository);
         given(repository.findById(ANY_GUESS_NUMBER)).willReturn(context);
 
-        guessCommand = HighLowNumberGuess.of(context.getId(), ANY_GUESS_NUMBER);
+        guessCommand = GuessHighLowNumber.of(context.getId(), ANY_GUESS_NUMBER);
     }
 
     @Test

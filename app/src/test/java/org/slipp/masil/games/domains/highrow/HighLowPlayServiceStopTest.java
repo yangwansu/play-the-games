@@ -7,7 +7,6 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slipp.masil.games.domains.PlayState;
-import org.slipp.masil.games.domains.Score;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -38,7 +37,7 @@ public class HighLowPlayServiceStopTest {
         sut = new HighLowPlayService(judge, repository);
     }
 
-    HighLowPlayStop command = new HighLowPlayStop(1L, "userName");
+    StopHighLowPlay command = new StopHighLowPlay(1L, "userName");
 
     @Test
     void stop_under_playing() {

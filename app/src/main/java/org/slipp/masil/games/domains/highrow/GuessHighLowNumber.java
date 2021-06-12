@@ -2,8 +2,8 @@ package org.slipp.masil.games.domains.highrow;
 
 import lombok.Value;
 
-@Value
-public class HighLowPlayStop {
+@Value(staticConstructor = "of")
+public class GuessHighLowNumber {
     Long contextId;
-    String userName;
+    Long guessNumber;
 }

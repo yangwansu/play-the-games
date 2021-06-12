@@ -3,7 +3,6 @@ package org.slipp.masil.games.domains.highrow;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -37,7 +36,7 @@ class HighLowPlayServiceStartTest {
         sut = new HighLowPlayService(judge, contextFactory, repository);
     }
 
-    HighLowPlayStart command = new HighLowPlayStart("Foo");
+    StartHighLowPlay command = new StartHighLowPlay("Foo");
 
     @Test
     void start() {

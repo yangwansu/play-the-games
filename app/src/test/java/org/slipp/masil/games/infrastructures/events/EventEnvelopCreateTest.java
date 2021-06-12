@@ -4,10 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.slipp.masil.games.domains.highrow.HighLowPlayStart;
+import org.slipp.masil.games.domains.highrow.StartHighLowPlay;
 import org.slipp.masil.games.domains.highrow.HighLowPlayingContext;
 import org.slipp.masil.games.domains.highrow.HighLowPlayingContextFactory;
-import org.slipp.masil.games.domains.highrow.StartedHighLowPlay;
+import org.slipp.masil.games.domains.highrow.HighLowPlayStarted;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,13 +18,13 @@ public class EventEnvelopCreateTest {
 
     @BeforeEach
     void setUp() {
-        context = HighLowPlayingContextFactory.DEFAULT.create(new HighLowPlayStart("Foo"));
+        context = HighLowPlayingContextFactory.DEFAULT.create(new StartHighLowPlay("Foo"));
     }
 
     @Test
     void build() {
 
-        StartedHighLowPlay domainEvent = new StartedHighLowPlay(context);
+        HighLowPlayStarted domainEvent = new HighLowPlayStarted(context);
         EventEnvelop envelop = EventEnvelop.of(domainEvent);
 
         assertThat(envelop.getId()).isNull(); //TODO fill
@@ -32,10 +32,10 @@ public class EventEnvelopCreateTest {
         assertThat(envelop.getOccurredAt()).isEqualTo(domainEvent.getOccurredAt());
 
 
-        assertThat(envelop.getDomainEventName()).isEqualTo(StartedHighLowPlay.class.getName());
+        assertThat(envelop.getDomainEventName()).isEqualTo(HighLowPlayStarted.class.getName());
         assertThat(envelop.getAggregateRoot()).isEqualTo(Serializer.getInstance().serialize(context));
 
-        StartedHighLowPlay deserialize = Serializer.getInstance().deserialize(envelop.getDomainEvent(), StartedHighLowPlay.class);
+        HighLowPlayStarted deserialize = Serializer.getInstance().deserialize(envelop.getDomainEvent(), HighLowPlayStarted.class);
 
         assertThat(envelop.getDomainEvent())
                 .isEqualTo(Serializer.getInstance().serialize(deserialize));

@@ -24,13 +24,13 @@ public class HighLowApplicationService {
 
     @Transactional
     public void start() {
-        HighLowPlayStart command = new HighLowPlayStart("Foo");
+        StartHighLowPlay command = new StartHighLowPlay("Foo");
         getHighLowPlayService().start(command);
     }
 
     @Transactional
     public void exit() {
-        HighLowPlayStart command = new HighLowPlayStart("Foo");
+        StartHighLowPlay command = new StartHighLowPlay("Foo");
         getHighLowPlayService().start(command);
     }
 }

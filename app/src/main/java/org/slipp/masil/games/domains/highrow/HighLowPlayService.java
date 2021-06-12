@@ -19,15 +19,15 @@ public class HighLowPlayService {
         this.contextRepository = contextRepository;
     }
 
-    public Long start(HighLowPlayStart highLowStart) {
-        HighLowPlayingContext context = contextFactory.create(highLowStart);
+    public Long start(StartHighLowPlay command) {
+        HighLowPlayingContext context = contextFactory.create(command);
         context.start();
         contextRepository.save(context);
         return context.getId();
     }
     // TODO 도메인 상으로 내려야 한다.
-    public void stop(HighLowPlayStop highLowPlayStop) {
-        HighLowPlayingContext context = contextRepository.findById(highLowPlayStop.getContextId());
+    public void stop(StopHighLowPlay command) {
+        HighLowPlayingContext context = contextRepository.findById(command.getContextId());
         if (context.getState().equals(PlayState.ENDED)){
             throw new IllegalStateException("already ended game");
         }
@@ -36,13 +36,13 @@ public class HighLowPlayService {
         contextRepository.save(context);
     }
 
-    public HighLowPlayingResult play(HighLowNumberGuess guess) {
-        HighLowPlayingContext context = contextRepository.findById(guess.getContextId());
-        HighLowJudgement judgement = this.judge.judge(guess.getGuessNumber());
+    public HighLowPlayingResult play(GuessHighLowNumber command) {
+        HighLowPlayingContext context = contextRepository.findById(command.getContextId());
+        HighLowJudgement judgement = this.judge.judge(command.getGuessNumber());
         if (judgement == HighLowJudgement.MATCH) {
             context.match();
             contextRepository.save(context);
         }
-        return new HighLowPlayingResult(guess.getContextId(), judgement);
+        return new HighLowPlayingResult(command.getContextId(), judgement);
     }
 }

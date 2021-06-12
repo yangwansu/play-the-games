@@ -4,7 +4,7 @@ import lombok.Value;
 import org.slipp.masil.games.domains.game.GameId;
 
 @Value
-public class HighLowPlayStart {
+public class StartHighLowPlay {
     String username;
 
     public GameId getGameId() {
