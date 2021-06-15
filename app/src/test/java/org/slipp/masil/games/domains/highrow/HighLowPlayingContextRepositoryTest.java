@@ -1,6 +1,7 @@
 package org.slipp.masil.games.domains.highrow;
 
 import org.junit.jupiter.api.Test;
+import org.slipp.masil.games.domains.Target;
 import org.slipp.masil.games.domains.game.GameId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,10 +24,9 @@ class HighLowPlayingContextRepositoryTest {
 	@Test
 	void saveAndFind() {
 
-		int target = 10;
 		GameId gameId = GameId.of(1L);
 		String userName = "Len";
-		play = HighLowPlayingContext.by(gameId, userName, LocalDateTime.now(), target);
+		play = HighLowPlayingContext.by(gameId, userName, LocalDateTime.now());
 
 		HighLowPlayingContext save = repository.save(play);
 		HighLowPlayingContext find = repository.findById(save.getId());

@@ -13,6 +13,10 @@ public class Serializer {
     private static Serializer serializer;
     private Gson gson;
 
+    private Serializer() {
+        this.build();
+    }
+
     public static synchronized Serializer getInstance() {
         if (Serializer.serializer == null) {
             Serializer.serializer = new Serializer();
@@ -20,20 +24,15 @@ public class Serializer {
         return Serializer.serializer;
     }
 
-    private Serializer() {
-        this.build();
-    }
-
-
     public String serialize(Object object) {
-        if(object == null) {
+        if (object == null) {
             return EMPTY;
         }
-        if(EMPTY.equals(object)) {
+        if (EMPTY.equals(object)) {
             return EMPTY;
         }
 
-        if(object instanceof String) {
+        if (object instanceof String) {
             return (String) object;
         }
 

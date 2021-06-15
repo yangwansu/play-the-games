@@ -13,7 +13,6 @@ public interface HighLowPlayingContextFactory {
 
 
     default HighLowPlayingContext create(StartHighLowPlay command) {
-        return HighLowPlayingContext.by(command.getGameId(), command.getUsername(),
-                LocalDateTime.now(), 10);
+        return HighLowPlayingContext.by(command.getGameId(), command.getUsername(), LocalDateTime.now());
     }
 }

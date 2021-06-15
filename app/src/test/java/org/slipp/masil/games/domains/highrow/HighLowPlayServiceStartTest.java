@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slipp.masil.games.domains.Judge;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -24,7 +25,7 @@ class HighLowPlayServiceStartTest {
     HighLowPlayingContext context;
 
     @Mock
-    HighLowJudge judge;
+    Judge judge;
 
     @Mock
     HighLowPlayingContextFactory contextFactory;

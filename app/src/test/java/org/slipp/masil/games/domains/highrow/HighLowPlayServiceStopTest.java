@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slipp.masil.games.domains.Judge;
 import org.slipp.masil.games.domains.PlayState;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,7 +17,7 @@ import static org.mockito.Mockito.*;
 //TODO Exit 와 stop 의 차이 - playing 종료 | game 종료
 //TODO stop 시 context 를 찾지 못했을때
 @ExtendWith(MockitoExtension.class)
-public class HighLowPlayServiceStopTest {
+class HighLowPlayServiceStopTest {
 
     private final static long ANY_CONTEXT_ID = 1L;
 
@@ -29,7 +30,7 @@ public class HighLowPlayServiceStopTest {
     HighLowPlayingContext context;
 
     @Mock
-    HighLowJudge judge;
+    Judge judge;
 
 
     @BeforeEach

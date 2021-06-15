@@ -9,4 +9,8 @@ public class Score {
     public boolean isValid() {
         return value >= 0;
     }
+
+    public Score plus() {
+        return Score.of(value + 1);
+    }
 }

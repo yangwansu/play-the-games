@@ -30,14 +30,12 @@ public class HighLowPlayingContext extends AbstractAggregateRoot<HighLowPlayingC
     @Getter
     private LocalDateTime startAt;
     @Getter
-    private int target;
-    @Getter
     private PlayState state;
     @Getter
     private Score score;
 
     private HighLowPlayingContext(Long id,
-                                  GameId gameId, String userName, LocalDateTime startAt, int target, PlayState state, Score score,
+                                  GameId gameId, String userName, LocalDateTime startAt, PlayState state, Score score,
                                   Long version) {
         this.id = id;
         if (Objects.isNull(gameId) && Objects.isNull(userName)) {
@@ -46,14 +44,13 @@ public class HighLowPlayingContext extends AbstractAggregateRoot<HighLowPlayingC
         setGameId(gameId);
         setUserName(userName);
         setStartAt(startAt);
-        setTarget(target);
         setState(state);
         setScore(score);
         this.version = version;
     }
 
-    public static HighLowPlayingContext by(GameId gameId, String userName, LocalDateTime startAt, int target) {
-        return new HighLowPlayingContext(null, gameId, userName, startAt, target, ON_GAME, Score.of(0), INIT_VERSION);
+    public static HighLowPlayingContext by(GameId gameId, String userName, LocalDateTime startAt) {
+        return new HighLowPlayingContext(null, gameId, userName, startAt, ON_GAME, Score.of(0), INIT_VERSION);
     }
 
     private void setStartAt(LocalDateTime startAt) {
@@ -69,21 +66,14 @@ public class HighLowPlayingContext extends AbstractAggregateRoot<HighLowPlayingC
         this.gameId = gameId;
     }
 
-    private void setTarget(int target) {
-        if (target < 0) {
-            throw new IllegalStateException("target is invalid");
-        }
-        this.target = target;
-    }
-
-    public void setState(PlayState state) {
+    private void setState(PlayState state) {
         if (Objects.isNull(state)) {
             throw new IllegalArgumentException("state is invalid");
         }
         this.state = state;
     }
 
-    public void setScore(Score score) {
+    private void setScore(Score score) {
         if (Objects.isNull(score) || score.isValid() == false) {
             throw new IllegalArgumentException("score is invalid");
         }
@@ -95,12 +85,19 @@ public class HighLowPlayingContext extends AbstractAggregateRoot<HighLowPlayingC
     }
 
     public void stop() {
+        if (getState().equals(PlayState.ENDED)) {
+            throw new IllegalStateException("already ended game");
+        }
         this.setState(ENDED);
         andEvent(new HighLowPlayStopped(this));
     }
 
     public void match() {
         andEvent(new HighLowPlayMatched(this));
+    }
+
+    public void tryPlay() {
+        this.setScore(score.plus());
     }
 
 }
