@@ -11,8 +11,7 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import static org.slipp.masil.games.domains.PlayState.ENDED;
-import static org.slipp.masil.games.domains.PlayState.ON_GAME;
+import static org.slipp.masil.games.domains.PlayState.*;
 
 public class HighLowPlayingContext extends AbstractAggregateRoot<HighLowPlayingContext> {
 
@@ -49,8 +48,13 @@ public class HighLowPlayingContext extends AbstractAggregateRoot<HighLowPlayingC
         this.version = version;
     }
 
+    @Deprecated
     public static HighLowPlayingContext by(GameId gameId, String userName, LocalDateTime startAt) {
-        return new HighLowPlayingContext(null, gameId, userName, startAt, ON_GAME, Score.of(0), INIT_VERSION);
+        return new HighLowPlayingContext(null, gameId, userName, startAt, INIT, Score.of(0), INIT_VERSION);
+    }
+
+    public static HighLowPlayingContext by(GameId gameId, String userName) {
+        return by(gameId, userName, LocalDateTime.now());
     }
 
     private void setStartAt(LocalDateTime startAt) {
@@ -70,6 +74,22 @@ public class HighLowPlayingContext extends AbstractAggregateRoot<HighLowPlayingC
         if (Objects.isNull(state)) {
             throw new IllegalArgumentException("state is invalid");
         }
+
+        if(isOn() && state == ON_GAME) {
+            throw new IllegalStateException();
+        }
+
+        if(! isOn() && state == ENDED) {
+            throw new IllegalStateException();
+        }
+
+        if(isOff() && state == ON_GAME) {
+            throw new IllegalStateException();
+        }
+
+        if(isOff() && state == ENDED) {
+            throw new IllegalStateException();
+        }
         this.state = state;
     }
 
@@ -81,6 +101,7 @@ public class HighLowPlayingContext extends AbstractAggregateRoot<HighLowPlayingC
     }
 
     public void start() {
+        setState(ON_GAME);
         andEvent(new HighLowPlayStarted(this));
     }
 
@@ -93,11 +114,22 @@ public class HighLowPlayingContext extends AbstractAggregateRoot<HighLowPlayingC
     }
 
     public void match() {
+        this.setState(ENDED);
         andEvent(new HighLowPlayMatched(this));
     }
 
     public void tryPlay() {
+        if(!isOn()){
+            throw new IllegalStateException();
+        }
         this.setScore(score.plus());
     }
 
+    public boolean isOn() {
+        return ON_GAME == getState();
+    }
+
+    public boolean isOff() {
+        return ENDED == getState();
+    }
 }
